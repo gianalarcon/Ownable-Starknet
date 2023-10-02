@@ -6,10 +6,7 @@ version = "0.1.0"
 
 [dependencies]
 # foo = { path = "vendor/foo" }
-starknet = ">=2.0.2"
-
-[cairo]
-sierra-replace-ids = true
+starknet = ">=2.1.0"
 
 [[target.starknet-contract]]
 sierra = true
