@@ -49,10 +49,7 @@ mod ownable {
     #[external(v0)]
     impl OwnableDataImpl of IData<ContractState> {
         fn other_func(self: @ContractState, other_contract: ContractAddress) -> felt252 {
-            let dispatcher = IDataDispatcher { contract_address: other_contract };
-
-            let data = dispatcher.get_data();
-            data
+            IDataDispatcher { contract_address: other_contract }.get_data()
         }
 
         fn get_data(self: @ContractState) -> felt252 {
