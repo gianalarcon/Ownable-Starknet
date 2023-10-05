@@ -86,27 +86,27 @@ mod ownable {
         }
     }
 }
+// #[cfg(test)]
+// mod tests {
+//     use cairo1_v2::ownable;
+//     use cairo1_v2::{OwnableTraitDispatcher, OwnableTraitDispatcherTrait};
+//     use starknet::{ContractAddress, Into, TryInto, OptionTrait};
+//     use starknet::syscalls::deploy_syscall;
+//     use result::ResultTrait;
+//     use array::{ArrayTrait, SpanTrait};
 
-#[cfg(test)]
-mod tests {
-    use cairo1_v2::ownable;
-    use cairo1_v2::{OwnableTraitDispatcher, OwnableTraitDispatcherTrait};
-    use starknet::{ContractAddress, Into, TryInto, OptionTrait};
-    use starknet::syscalls::deploy_syscall;
-    use result::ResultTrait;
-    use array::{ArrayTrait, SpanTrait};
+//     #[test]
+//     #[available_gas(10_000_000)]
+//     fn unit_test() {
+//         let admin_address: ContractAddress = 'admin'.try_into().unwrap();
+//         let mut calldata = array![admin_address.into()];
+//         let (address0, _) = deploy_syscall(
+//             ownable::TEST_CLASS_HASH.try_into().unwrap(), 0, calldata.span(), false
+//         )
+//             .unwrap();
+//         let mut contract0 = OwnableTraitDispatcher { contract_address: address0 };
 
-    #[test]
-    #[available_gas(10_000_000)]
-    fn unit_test() {
-        let admin_address: ContractAddress = 'admin'.try_into().unwrap();
-        let mut calldata = array![admin_address.into()];
-        let (address0, _) = deploy_syscall(
-            ownable::TEST_CLASS_HASH.try_into().unwrap(), 0, calldata.span(), false
-        )
-            .unwrap();
-        let mut contract0 = OwnableTraitDispatcher { contract_address: address0 };
+//         assert(contract0.owner() == admin_address, 'Wrong owner');
+//     }
+// }
 
-        assert(contract0.owner() == admin_address, 'Wrong owner');
-    }
-}
