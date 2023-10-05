@@ -55,3 +55,13 @@ fn test_transfer_ownership() {
     assert(dispatcher.owner() == Accounts::new_admin(), Errors::INVALID_OWNER);
 }
 
+#[test]
+#[should_panic(expected: ('Caller is not the owner', ))]
+fn test_transfer_ownership_bad_guy() {
+    let contract_address = deploy_contract('ownable');
+    let dispatcher = OwnableTraitDispatcher { contract_address };
+    start_prank(contract_address, Accounts::bad_guy());
+    dispatcher.transfer_ownership(Accounts::bad_guy());
+
+    assert(dispatcher.owner() == Accounts::bad_guy(), Errors::INVALID_OWNER);
+}
