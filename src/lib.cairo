@@ -11,7 +11,7 @@ trait IData<T> {
 #[starknet::interface]
 trait OwnableTrait<T> {
     fn transfer_ownership(ref self: T, new_owner: ContractAddress);
-    fn owner(self: @T) -> ContractAddress;
+    fn read_owner(self: @T) -> ContractAddress;
 }
 
 #[starknet::contract]
@@ -28,7 +28,7 @@ mod ownable {
     #[event]
     #[derive(Drop, starknet::Event)]
     enum Event {
-        OwnershipTransferred: OwnershipTransferred, 
+        OwnershipTransferred: OwnershipTransferred,
     }
 
     #[derive(Drop, starknet::Event)]
@@ -40,7 +40,7 @@ mod ownable {
     }
 
     #[constructor]
-    fn constructor(ref self: ContractState, initial_owner: ContractAddress, ) {
+    fn constructor(ref self: ContractState, initial_owner: ContractAddress) {
         self.owner.write(initial_owner);
         self.data.write(1);
     // Any variable of the storage that is not initialized
@@ -70,10 +70,10 @@ mod ownable {
             let prev_owner = self.owner.read();
             self.owner.write(new_owner);
 
-            self.emit(OwnershipTransferred { prev_owner, new_owner,  });
+            self.emit(OwnershipTransferred { prev_owner, new_owner });
         }
 
-        fn owner(self: @ContractState) -> ContractAddress {
+        fn read_owner(self: @ContractState) -> ContractAddress {
             self.owner.read()
         }
     }
@@ -109,4 +109,5 @@ mod ownable {
 //         assert(contract0.owner() == admin_address, 'Wrong owner');
 //     }
 // }
+
 
