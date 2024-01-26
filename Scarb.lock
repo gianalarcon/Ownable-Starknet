@@ -2,5 +2,5 @@
 version = 1
 
 [[package]]
-name = "cairo1_v2"
+name = "ownable_starknet"
 version = "0.1.0"

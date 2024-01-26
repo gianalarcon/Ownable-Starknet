@@ -11,7 +11,7 @@ trait IData<T> {
 #[starknet::interface]
 trait OwnableTrait<T> {
     fn transfer_ownership(ref self: T, new_owner: ContractAddress);
-    fn read_owner(self: @T) -> ContractAddress;
+    fn owner(self: @T) -> ContractAddress;
 }
 
 #[starknet::contract]
@@ -47,7 +47,7 @@ mod ownable {
     // will have default value -> data = 0.
     }
 
-    #[external(v0)]
+    #[abi(embed_v0)]
     impl OwnableDataImpl of IData<ContractState> {
         fn other_func(self: @ContractState, other_contract: ContractAddress) -> felt252 {
             IDataDispatcher { contract_address: other_contract }.get_data()
@@ -63,7 +63,7 @@ mod ownable {
         }
     }
 
-    #[external(v0)]
+    #[abi(embed_v0)]
     impl OwnableTraitImpl of OwnableTrait<ContractState> {
         fn transfer_ownership(ref self: ContractState, new_owner: ContractAddress) {
             self.only_owner();
@@ -73,7 +73,7 @@ mod ownable {
             self.emit(OwnershipTransferred { prev_owner, new_owner });
         }
 
-        fn read_owner(self: @ContractState) -> ContractAddress {
+        fn owner(self: @ContractState) -> ContractAddress {
             self.owner.read()
         }
     }
@@ -89,8 +89,8 @@ mod ownable {
 
 #[cfg(test)]
 mod tests {
-    use cairo1_v2::ownable;
-    use cairo1_v2::{OwnableTraitDispatcher, OwnableTraitDispatcherTrait};
+    use ownable_starknet::ownable;
+    use ownable_starknet::{OwnableTraitDispatcher, OwnableTraitDispatcherTrait};
     use starknet::{ContractAddress, Into, TryInto, OptionTrait};
     use starknet::syscalls::deploy_syscall;
     use result::ResultTrait;
@@ -107,7 +107,7 @@ mod tests {
             .unwrap();
         let mut contract0 = OwnableTraitDispatcher { contract_address: address0 };
 
-        assert(contract0.read_owner() == admin_address, 'Wrong owner');
+        assert(contract0.owner() == admin_address, 'Wrong owner');
     }
 }
 
